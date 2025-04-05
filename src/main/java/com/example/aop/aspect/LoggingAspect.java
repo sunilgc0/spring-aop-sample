@@ -14,7 +14,7 @@ public class LoggingAspect {
         long start = System.currentTimeMillis();
         Object result = joinPoint.proceed();
         long duration = System.currentTimeMillis() - start;
-        System.out.println("📈 " + joinPoint.getSignature() + " executed in " + duration + " ms");
+        System.out.println("📈 " + joinPoint.getSignature().getName() + " executed in " + duration + " ms"+ result);
         return result;
     }
 
@@ -23,14 +23,14 @@ public class LoggingAspect {
         System.out.println("🔔 Before method: " + joinPoint.getSignature().getName());
     }
 
-    @After("execution(* com.example.aop.service.*.*(..))")
-    public void afterAdvice(JoinPoint joinPoint) {
-        System.out.println("✅ After method: " + joinPoint.getSignature().getName());
-    }
-
     @AfterReturning(pointcut = "execution(* com.example.aop.service.*.*(..))", returning = "result")
     public void afterReturningAdvice(JoinPoint joinPoint, Object result) {
         System.out.println("📤 Method " + joinPoint.getSignature().getName() + " returned: " + result);
+    }
+
+    @After("execution(* com.example.aop.service.*.*(..))")
+    public void afterAdvice(JoinPoint joinPoint) {
+        System.out.println("✅ After method: " + joinPoint.getSignature().getName());
     }
 
     @AfterThrowing(pointcut = "execution(* com.example.aop.service.*.*(..))", throwing = "ex")
